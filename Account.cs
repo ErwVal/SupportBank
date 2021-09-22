@@ -8,13 +8,14 @@ namespace SupportBank
 {
     class Account
     {
+        private static int counter = 0;
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Net { get; set; }
 
-        public Account(int id, string name, decimal net)
+        public Account(string name, decimal net)
         {
-            Id = id;
+            Id = ++counter;
             Name = name;
             Net = net;
         }
