@@ -11,13 +11,18 @@ namespace SupportBank
         private static int counter = 0;
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Balance { get; set; }
+        public Decimal Balance { get; set; }
 
         public Account(string name)
         {
             Id = ++counter;
             Name = name;
             Balance = 0;
+        }
+
+        public override string ToString()
+        {   
+            return Name + ( Balance > 0 ? " is owed " : " owes ") + Balance;
         }
     }
 }

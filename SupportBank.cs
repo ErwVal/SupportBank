@@ -7,8 +7,17 @@ using System.IO;
 
 namespace SupportBank
 {
-    class Program
+    class SupportBank
     {
+
+        public List<Transaction> Transactions { get; set; }
+        public List<Account> Accounts { get; set; }
+
+        public SupportBank()
+        {
+            Transactions = SupportBank.GetTransactions("./Transactions2014.csv");
+            Accounts = GetAccounts();
+        }
 
         public static List<Transaction> GetTransactions(string fileName) => File.ReadAllLines(fileName)
                                                                                     .Skip(1)
@@ -16,11 +25,11 @@ namespace SupportBank
                                                                                     .Select(row => new Transaction(Convert.ToDateTime(row[0]), row[1], row[2], row[3], Convert.ToDecimal(row[4])))
                                                                                     .ToList(); // We could have an Enumerable by deleting this line
 
-        public static List<Account> GetAccounts(List<Transaction> transactions)
+        public List<Account> GetAccounts()
         {
             Dictionary<string, Account> nameToAccount = new Dictionary<string, Account>();
 
-            foreach ((string fromUser, string toUser, decimal amount) in transactions)
+            foreach ((string fromUser, string toUser, decimal amount) in Transactions)
             {
                 // Check if account exists:
                  if (!nameToAccount.ContainsKey(fromUser)) 
@@ -34,18 +43,30 @@ namespace SupportBank
                  }
 
                 // Update balance
-                nameToAccount[fromUser].Balance += amount;
-                nameToAccount[toUser].Balance -= amount;
+                nameToAccount[fromUser].Balance = nameToAccount[fromUser].Balance + amount;
+                nameToAccount[toUser].Balance = nameToAccount[toUser].Balance + amount;
             }
 
             return nameToAccount.Values.ToList();
         }
 
+        void ListAllAccounts()
+        {
+            Accounts.ForEach(Console.WriteLine);
+        }
+
+        void ListAccountTransactions(string name)
+        {
+            List<Transaction> filteredTransactions = Transactions.Where(transaction => transaction.FromUser.Equals(name) || transaction.ToUser.Equals(name)).ToList();
+            filteredTransactions.ForEach(Console.WriteLine);
+        }
+
         static void Main(string[] args)
         {
-            List<Transaction> transactions = Program.GetTransactions("./Transactions2014.csv");
-            List<Account> accounts = Program.GetAccounts(transactions);
-            
+            SupportBank bank = new SupportBank(); // Now just using the args passed in
+            bank.ListAccountTransactions("Todd");
         }
     }
 }
+
+// Gonna push to git :)
