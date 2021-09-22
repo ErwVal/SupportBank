@@ -11,13 +11,13 @@ namespace SupportBank
         private static int counter = 0;
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Net { get; set; }
+        public decimal Balance { get; set; }
 
-        public Account(string name, decimal net)
+        public Account(string name)
         {
             Id = ++counter;
             Name = name;
-            Net = net;
+            Balance = 0;
         }
     }
 }
