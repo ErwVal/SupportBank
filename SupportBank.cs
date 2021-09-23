@@ -61,12 +61,69 @@ namespace SupportBank
             filteredTransactions.ForEach(Console.WriteLine);
         }
 
+        void FetchUserAccountName()
+        {
+            Console.WriteLine("\nPlease enter the account holder's name: ");
+                    string name = Console.ReadLine();
+                    while(!Accounts.Any(account => account.Name == name))
+                    { 
+                        Console.WriteLine("Invalid name. Please enter a valid name.");
+                        name = Console.ReadLine();
+                    }
+
+                    ListAccountTransactions(name);
+        }
+
+
+        int GetUserOptions()
+        {
+                Console.WriteLine("\nWhat would you like to do today?");
+                Console.WriteLine(" 1) See all accounts.\n 2) See account transactions.");
+
+                int userOption;
+                string firstInput = Console.ReadLine(); // String from user
+                while (!(int.TryParse(firstInput, out userOption) && userOption == 1 || userOption == 2))
+                {
+                    Console.WriteLine("Please enter a valid option 1 or 2.");
+                    firstInput = Console.ReadLine();
+                }
+
+                return userOption;
+        }
+
+        void RunSoftBank()
+        {
+            Console.WriteLine("Welcome to Support Bank.");
+
+            while (true)
+            {     
+                int userOption = GetUserOptions();
+
+                if(userOption == 1)
+                {
+                    ListAllAccounts(); // No class specified because method is not static
+                }
+                else 
+                {
+                    FetchUserAccountName();
+                }
+
+                Console.WriteLine("\nWould you like to do something else today? y/n");
+                var answer = Console.ReadLine();
+                var yesAnswers = new List<string>() {"yes", "Yes", "y", "Y", "yeah", "Yeah", "YES"};
+                if (!yesAnswers.Contains(answer))
+                {
+                    break;
+                }
+            }
+
+            Console.WriteLine("Have a nice day!");
+        }
+
         static void Main(string[] args)
         {
-            SupportBank bank = new SupportBank(); // Now just using the args passed in
-            bank.ListAccountTransactions("Todd");
+            SupportBank bank = new SupportBank();
+            bank.RunSoftBank();
         }
     }
 }
-
-// Gonna push to git :)

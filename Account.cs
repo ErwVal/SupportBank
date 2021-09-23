@@ -22,7 +22,8 @@ namespace SupportBank
 
         public override string ToString()
         {   
-            return Name + ( Balance > 0 ? " is owed " : " owes ") + Balance;
+            string balanceString = Balance > 0 ? " is owed " : " owes ";
+            return $"{Name} {balanceString} {Balance}";
         }
     }
 }

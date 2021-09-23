@@ -24,7 +24,8 @@ namespace SupportBank
 
         public override string ToString()
         {
-            return "On the " + Date.ToString("dd MMMM, yyyy") + ", " + FromUser + " lent " + ToUser + " £" + Amount + " for " + Narrative + ".";
+            string dateString = Date.ToString("dd MMMM, yyyy");
+            return $"On the {dateString} {FromUser} lent {ToUser} £{Amount} for {Narrative}.";
         }
 
         public void Deconstruct(out string fromUser, out string toUser, out decimal amount) 
